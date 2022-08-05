@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  mysql_master:
+
+    image: mysql-gtids1
+    build:
+      context: master
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+
+    ports:
+      - 33060:3306
+
+  mysql_slave:
+
+    image: mysql-gtids2
+    build:
+      context: slave
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+
+    ports:
+      - 33061:3306
+    depends_on:
+      - mysql_master
