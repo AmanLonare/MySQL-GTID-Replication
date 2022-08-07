@@ -13,15 +13,28 @@ services:
     ports:
       - 33060:3306
 
-  mysql_slave:
+  mysql_slave1:
 
     image: mysql-gtids2
     build:
-      context: slave
+      context: slave1
     environment:
       - MYSQL_ROOT_PASSWORD=root
 
     ports:
       - 33061:3306
+    depends_on:
+      - mysql_master
+
+  mysql_slave2:
+
+    image: mysql-gtids3
+    build:
+      context: slave2
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+
+    ports:
+      - 33062:3306
     depends_on:
       - mysql_master
