@@ -21,51 +21,36 @@ services:
      - LOG_LEVEL=DEBUG
     restart: on-failure
 
-  mysql_master:
-
+  mysql_master1:
     image: mysql-gtids1
     build:
       context: master
     environment:
       - MYSQL_ROOT_PASSWORD=root
-
+    restart: always
     ports:
       - 33060:3306
 
-  mysql_slave1:
 
+  mysql_master2:
     image: mysql-gtids2
     build:
       context: slave1
     environment:
       - MYSQL_ROOT_PASSWORD=root
-
+    restart: always
     ports:
       - 33061:3306
-    depends_on:
-      - mysql_master
-
-  mysql_slave2:
-
-    image: mysql-gtids3
-    build:
-      context: slave2
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-
-    ports:
-      - 33062:3306
-    depends_on:
-      - mysql_master
+  
 
   proxysql:
-    
     image: proxysql/proxysql:2.0.12
     ports:
       - 6032:6032
       - 6033:6033
     volumes:
       - ./proxysql/proxysql.cnf:/etc/proxysql.cnf 
+    restart: always
 
   postgres:
     image: quay.io/debezium/postgres:9.6     
